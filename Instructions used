@@ -1,0 +1,185 @@
+address bind error
+fuser -k 5000/tcp
+kills it
+
+
+
+Iteration 1
+
+Build Script***
+
+build/compile
+mvn compile
+
+
+check all dependencies working
+mvn verify
+
+mvn test
+
+launch java application
+add dependency to make application run from commandline using maven
+
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+                <mainClass>za.co.wethinkcode.example.RunServer</mainClass>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
+then launch application***
+mvn exec:java
+which Starts server
+
+If you do not want to update the pom.xml, you can also indicate the main class as a parameter:
+
+mvn exec:java -Dexec.mainClass="za.co.wethinkcode.example.ExampleMainClass"
+ mvn exec:java -Dexec.mainClass=za.co.wethinkcode.example.RunServer
+
+
+
+To compile the latest code before running, you can list multiple maven tasks:
+
+mvn compile exec:java
+
+package application to be able run in different environments
+this is the executable jar
+create mvn plugin in pom to package dependencies into one jar
+We need to first configure a maven plugin in our pom.xml file that will package all the dependencies into a single .jar file, and indicate what the main class is that must be runnable.
+<build>
+    <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>
+                                        za.co.wethinkcode.robots.server.Server
+                                    </mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+    </plugins>
+</build>
+
+
+The above makes use of the maven-assembly-plugin to build a single jar file for our
+application, and indicates the class za.co.wethinkcode.robots.server.Server as our main class.
+
+package and build jar (ignore)
+mvn package
+Skip tests and package
+mvn -DskipTests=true  package
+
+
+Managing releases***
+
+Versioning app Tagging
+Annoted tag
+ git tag -a V1.0
+ then type git tag -a v1.0 -m "Project redone version 1.0"
+
+Lightweight tag
+git tag v1.0-lw
+
+list tags
+git tag
+
+**checkout tag
+git checkout V1.0
+
+delete tag
+ git tag -d <Version_1>
+
+
+
+Build Script Makefile***
+Good page https://copyprogramming.com/howto/command-line-arguments-via-makefile
+to run file terminal command is make
+
+
+The Makefile must be able to do the following:
+
+    Compile your code
+
+    Run all tests against the reference server
+
+    Run all tests against your own server
+
+    Version your software for release
+
+        It must be able to distinguish between a release build and
+         a development build. For a release build it must remove the SNAPSHOT part
+         of the version string in the pom.xml file before doing the build.
+         You can use Makefile variables and command line parameters to specify whether
+          this is for development or release, or you can use different make tasks, or both.
+          You can also use different bash scripts too. The choice is yours.
+
+    Package the software for release.
+    Tag the version number on git as release-x.y.z for software that has been successfully
+     built for release. Remember that a successful build is one that has passed all
+     acceptance tests for this iteration running against the reference server and your own server.
+
+
+
+
+
+Pipeline***
+Pipelines are configured using a version-controlled YAML file,
+.gitlab-ci.yml, within the root of a project. From there, you can set up parameters of your pipeline:
+FROM openjdk:11
+
+RUN mkdir Server
+
+COPY target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar /Server
+
+WORKDIR /Server
+
+ARG server_args=""
+
+EXPOSE 5000
+
+CMD java -jar toyworld-*-SNAPSHOT-jar-with-dependencies.jar ${server_args}
+
+
+Iteration 3:
+Docker
+List images
+docker images
+
+To remove docker image
+docker rmi <image Id>
+Remove all
+docker rmi $(docker images -q)
+
+List containers
+docker container ls -all
+Delete container
+docker rm <Container_ID>
+
+Create Docker txt file
+Our Docker file is pretty self explanatory.
+Here is a link to Docker commands:
+https://kapeli.com/cheat_sheets/Dockerfile.docset/Contents/Resources/Documents/index
+
+

@@ -1,0 +1,137 @@
+#Makefile updated for iteration 3
+all: clean compile package runServerJar kill
+
+clean:
+	mvn clean
+
+
+compile:
+#	java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar -p 5000 -s 2 & fuser -k 5000/tcp & mvn test
+	mvn compile
+
+
+package:
+	mvn package
+
+
+runServerJar:
+	java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar -p 5000 -s 2  fuser -k 5000/tcp
+
+kill:
+	fuser -k 5000/tcp
+
+unit-tests:
+	mvn test
+
+
+
+
+
+
+#test: runReferenceServer
+#build: clean compile package
+#
+
+
+
+	#mvn clean install -DskipTests
+
+#verify:
+#	mvn verify
+
+
+#runReferenceServer:
+#	java -jar lib/reference-server-0.2.3.jar -p 5000 -s 2 & mvn test
+#& mvn test & fuser -k 5000/tcp
+
+
+
+#test:
+#	java -jar lib/reference-server-0.2.3.jar -p 5000 -s 2 & mvn test & fuser -k 5000/tcp
+
+#test:
+#	java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar -p 5000 -s 2 & mvn test & fuser -k 5000/tcp
+
+
+
+
+
+	#java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar -p 5000 -s 2 & fuser -k 5000/tcp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+#all: clean referServ tests acceptance-tests compile killserv
+#
+#tests:
+#	java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar -p 5000 -s 2 & mvn test
+#
+#killserv:
+#	 fuser -k 5000/tcp
+#
+#
+#
+#clean:
+#	mvn clean
+#
+#referServ:
+#	java -jar lib/reference-server-0.2.3.jar -p 5000 -s 2 -o 1,1 & mvn test
+#
+#
+#
+#
+#compile:
+#	echo "compiling the code"
+#	java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar fuser -k 5000/tcp
+#	mvn compile
+#
+#unit-tests:
+#	mvn '-Dtest=za.co.wethinkcode.toyworld.unit.**' test
+#
+##acceptance-tests: package
+##	# test 1x1 no obstacles
+##	# run jar & run tests && stop server
+##	java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar &
+##	#mvn '-Dtest=za.co.wethinkcode.toyworld.acceptance.Size1.**' test && fuser 5000/tcp | xargs kill -9
+##
+##	# tests for 2x2 no obstacles
+##	java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar -s 2 &
+##	mvn '-Dtest=za.co.wethinkcode.toyworld.acceptance.Size2.noObstacles.**' test && fuser 5000/tcp | xargs kill -9
+##
+##	# tests for 2x2, one obstacle at 1,1
+##	java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar -s 2 &
+##	mvn '-Dtest=za.co.wethinkcode.toyworld.acceptance.Size2.ObstacleX1Y1.**' test && fuser 5000/tcp | xargs kill -9
+##
+##	# tests for 2x2, one obstacle at 0,1
+##	java -jar target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar -s 2 &
+##	mvn '-Dtest=za.co.wethinkcode.toyworld.acceptance.Size2.ObstacleX0Y1.**' test && fuser 5000/tcp | xargs kill -9
+#
+#
+#package:
+#	package -DskipTest
+#
+#
+##fully automate the process in the pipeline

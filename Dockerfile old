@@ -1,0 +1,39 @@
+FROM openjdk:11
+
+RUN mkdir Server
+
+COPY target/toyworld-*-SNAPSHOT-jar-with-dependencies.jar /Server
+
+WORKDIR /Server
+
+ARG server_args=""
+
+EXPOSE 5000
+
+CMD java -jar toyworld-*-SNAPSHOT-jar-with-dependencies.jar ${server_args}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# FROM openjdk:8
+# MAINTAINER tech-team <tech-team@wethinkcode.co.za>
+#
+# RUN apt-get update && apt-get install -y make
+#
+# COPY Server.jar /
+# #
+# WORKDIR /
+# EXPOSE
+#
+# ENTRYPOINT ["java", "-jar", "server-1.2.0-jar-with-Server.jar"]
